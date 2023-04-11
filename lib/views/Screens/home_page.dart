@@ -1,66 +1,87 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
 
+class PalindromePage extends StatefulWidget {
   @override
-  State<HomePage> createState() => _HomePageState();
+  _PalindromePageState createState() => _PalindromePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  TextEditingController textEditingController = TextEditingController();
+class _PalindromePageState extends State<PalindromePage> {
+  String inputText = '';
+
+  bool isPalindrome(String text) {
+    List<String> characters = text.split("");
+    List<String> reversedCharacters = characters.reversed.toList();
+    String reversedText = reversedCharacters.join("");
+    return text == reversedText;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Palindrom Or Not",
-          style: TextStyle(fontSize: 25),
-        ),
+        title: Text('Palindrome Checker'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               TextField(
-                onSubmitted: (value) {
+                onChanged: (value) {
                   setState(() {
-                    var val = value.toString().split('').reversed;
-
-                    setState(() {
-                      (val == value)
-                          ? ScaffoldMessenger(
-                        child: SnackBar(
-                          content: Text("This Name is Palindrome"),
-                          backgroundColor: Colors.green,
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      )
-                          : ScaffoldMessenger(
-                        child: SnackBar(
-                          content: Text("This Name is Not Palindrome"),
-                          backgroundColor: Colors.red,
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    });
+                    inputText = value;
                   });
                 },
-                controller: textEditingController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  label: Text("Enter Your Name"),
+                  labelText: 'Enter a string',
                 ),
               ),
-              IconButton(
+              SizedBox(height: 16),
+              ElevatedButton(
                 onPressed: () {
-
+                  if (isPalindrome(inputText)) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Result'),
+                          content: Text('The string is a palindrome.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Result'),
+                          content: Text('The string is not a palindrome.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
-                icon: Icon(Icons.check),
+                child: Text('Check'),
               ),
             ],
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'views/Screens/home_page.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -17,11 +18,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: PalindromePage(),
     );
   }
 }
